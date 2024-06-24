@@ -1,70 +1,94 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, ImageBackground } from 'react-native';
+import { TextInput, Button, HelperText } from 'react-native-paper';
+import { Link } from 'expo-router';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
+export default function LoginScreen() {
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [isUsernameValid, setIsUsernameValid] = useState<boolean>(true);
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (username.includes('@')) {
+      setIsEmail(true);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setIsUsernameValid(emailRegex.test(username));
+    } else {
+      setIsEmail(false);
+      setIsUsernameValid(username.length >= 5 && username.length <= 10);
+    }
+  }, [username]);
+
+  useEffect(() => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{5,}$/;
+    setIsPasswordValid(passwordRegex.test(password));
+  }, [password]);
+
+  const handleLogin = () => {
+    if (isUsernameValid && isPasswordValid) {
+      // Handle successful login
+      console.log('Login successful');
+    } else {
+      // Handle validation error
+      console.log('Validation error');
+    }
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ImageBackground source={{uri: 'https://cdn.pixabay.com/photo/2016/08/31/22/36/background-1634817_1280.jpg'}} style={{'height': '100%'}}>
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <TextInput
+        label="Username or Email"
+        value={username}
+        onChangeText={text => setUsername(text)}
+        style={styles.input}
+        mode="outlined"
+        error={!isUsernameValid && username !== ''}
+      />
+      <HelperText type="error" visible={!isUsernameValid && username !== ''}>
+        {isEmail
+          ? 'Ingresa un correo electrónico válido.'
+          : 'El nombre de usuario debe tener entre 5 y 10 caracteres.'}
+      </HelperText>
+      <TextInput
+        label="Password"
+        value={password}
+        onChangeText={text => setPassword(text)}
+        style={styles.input}
+        mode="outlined"
+        secureTextEntry
+        error={!isPasswordValid && password !== ''}
+      />
+      <HelperText type="error" visible={!isPasswordValid && password !== ''}>
+        La contraseña debe tener al menos 5 caracteres, una mayúscula, una minúscula y un carácter especial.
+      </HelperText>
+      <Link href="/screens/home" asChild>
+      <Button mode="contained" onPress={handleLogin} disabled={!isUsernameValid || !isPasswordValid}>
+        Login
+      </Button>
+      </Link>
+    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  input: {
+    marginBottom: 12,
   },
 });

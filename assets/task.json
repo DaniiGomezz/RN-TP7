@@ -1,0 +1,45 @@
+[
+    {
+        "id": 1,
+        "titulo": "Estudiar para el examen de historia",
+        "descripcion": "",
+        "autor": "Martin",
+        "fecha": "2024-10-01"
+    },
+    {
+        "id": 2,
+        "titulo": "Limpiar la casa",
+        "descripcion": "Barrer, trapear y ordenar los cuartos",
+        "autor": "Oriana",
+        "fecha": "2024-10-05"
+    },
+    {
+        "id": 3,
+        "titulo": "Hacer ejercicio",
+        "descripcion": "Realizar una rutina de ejercicios cardiovasculares",
+        "autor": "Brian",
+        "fecha": "2024-10-10"
+    },
+    {
+        "id": 4,
+        "titulo": "Preparar el almuerzo",
+        "descripcion": "Cocinar una comida",
+        "autor": "Juliana",
+        "fecha": "2024-10-15"
+    },
+    {
+        "id": 5,
+        "titulo": "Dar un paseo",
+        "descripcion": "Despejarse un rato",
+        "autor": "Maximiliano",
+        "fecha": "2024-10-20"
+    },
+    {
+        "id": 6,
+        "titulo": "Pasear al perro",
+        "descripcion": "Ir a pasear al perro",
+        "autor": "Rodrigo",
+        "fecha": "2022-10-23"
+    }
+
+]
